@@ -2,6 +2,7 @@
 using FluentValidation;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Application.Validators
 {
@@ -15,7 +16,7 @@ namespace Application.Validators
 
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Id is required.")
-                .MustAsync(ExistInDatabase).WithMessage("Truck with the specified Id does not exist.");
+                .MustAsync(ExistInDatabase).WithErrorCode(HttpStatusCode.NotFound.ToString()).WithMessage("Truck with the specified Id does not exist.");
         }
 
         public async Task<bool> ExistInDatabase(int id, CancellationToken cancellationToken)

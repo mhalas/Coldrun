@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
 
 namespace Api.Exceptions.Handlers
 {
@@ -14,7 +15,9 @@ namespace Api.Exceptions.Handlers
                 return false;
             }
 
-            httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            httpContext.Response.StatusCode = validationException.Errors.Any(x => x.ErrorCode == HttpStatusCode.NotFound.ToString()) ? 
+                StatusCodes.Status404NotFound 
+                : StatusCodes.Status400BadRequest;
 
             var errors = validationException.Errors
             .GroupBy(e => e.PropertyName)
@@ -25,7 +28,7 @@ namespace Api.Exceptions.Handlers
 
             var problemDetails = new HttpValidationProblemDetails(errors)
             {
-                Status = StatusCodes.Status400BadRequest,
+                Status = httpContext.Response.StatusCode,
                 Title = "Validation failed",
                 Detail = "One or more validation errors occurred."
             };

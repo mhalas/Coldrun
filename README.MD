@@ -68,5 +68,5 @@ dotnet test
 | **GET** | `/api/trucks` | Get filtered, sorted, and paginated list of trucks |
 | **GET** | `/api/trucks/{id}` | Get details of a single truck by ID |
 | **POST** | `/api/trucks` | Create a new truck |
-| **PUT** | `/api/trucks` | Update truck details & trigger status transition validation |
+| **PUT** | `/api/trucks/{id}` | Update truck details & trigger status transition validation |
 | **DELETE** | `/api/trucks/{id}` | Remove a truck from the fleet |

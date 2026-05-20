@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
 
 namespace Application.Handlers.Trucks
@@ -19,7 +20,7 @@ namespace Application.Handlers.Trucks
             query = SortBy(request, query);
             query = Pagination(request, query);
 
-            return query.ToList();
+            return await query.ToListAsync(cancellationToken);
         }
 
         private IQueryable<Truck> Pagination(GetTruckListRequest request, IQueryable<Truck> query)
