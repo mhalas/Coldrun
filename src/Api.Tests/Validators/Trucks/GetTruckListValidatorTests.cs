@@ -50,5 +50,65 @@ namespace Api.Tests.Validators.Trucks
             result.ShouldHaveValidationErrorFor(x => x.SortBy)
                 .WithErrorMessage($"Sorting by column '{passedSortBy}' is not supported.");
         }
+
+        [Test]
+        public async Task Validate_GetTruckList_ShouldPassValidation_WhenPageNumberIsGreaterThan0()
+        {
+            var request = new GetTruckListRequest()
+            {
+                PageNumber = 1
+            };
+
+
+            var result = await _validator.TestValidateAsync(request);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public async Task Validate_GetTruckList_ShouldThrowError_WhenPageNumberLessThan0(int pageNumber)
+        {
+            var request = new GetTruckListRequest()
+            {
+                PageNumber = pageNumber
+            };
+
+
+            var result = await _validator.TestValidateAsync(request);
+
+            result.ShouldHaveValidationErrorFor(x => x.PageNumber)
+                .WithErrorMessage("Page number must be at least 1.");
+        }
+
+        [Test]
+        public async Task Validate_GetTruckList_ShouldPassValidation_WhenPageSizeIsGreaterThan0()
+        {
+            var request = new GetTruckListRequest()
+            {
+                PageSize = 1
+            };
+
+
+            var result = await _validator.TestValidateAsync(request);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public async Task Validate_GetTruckList_ShouldThrowError_WhenPageSizeLessThan1(int pageSize)
+        {
+            var request = new GetTruckListRequest()
+            {
+                PageSize = pageSize
+            };
+
+
+            var result = await _validator.TestValidateAsync(request);
+
+            result.ShouldHaveValidationErrorFor(x => x.PageSize)
+                .WithErrorMessage("Page size must be at least 1.");
+        }
     }
 }
