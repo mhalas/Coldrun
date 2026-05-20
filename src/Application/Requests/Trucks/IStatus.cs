@@ -4,6 +4,6 @@ namespace Application.Requests.Trucks
 {
     public interface IStatus
     {
-        public TruckStatus Status { get; set; }
+        public TruckStatus Status { get; }
     }
 }

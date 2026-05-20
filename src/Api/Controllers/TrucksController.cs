@@ -1,4 +1,5 @@
-﻿using Application.Requests.Trucks;
+﻿using Application.Dtos;
+using Application.Requests.Trucks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,10 @@ namespace API.Controllers
     public class TrucksController(IMediator mediator): ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> CreateTruck(CreateTruckRequest request)
+        public async Task<IActionResult> CreateTruck(TruckDto truck)
         {
+            var request = CreateTruckRequest.MapFromDto(truck);
+
             var result = await mediator.Send(request);
             return CreatedAtAction(
                 actionName: nameof(GetTruckById),
@@ -32,9 +35,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTruck(UpdateTruckRequest request) 
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> UpdateTruck(
+            [FromRoute] int id,
+            [FromBody] TruckDto truck) 
         {
+            var request = UpdateTruckRequest.MapFromDto(id, truck);
             await mediator.Send(request);
             return NoContent();
         }

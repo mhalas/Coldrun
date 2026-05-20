@@ -1,10 +1,11 @@
-﻿using Domain.Enums;
+﻿using Application.Dtos;
+using Domain.Enums;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Requests.Trucks
 {
-    public class UpdateTruckRequest : IRequest, IId, ICode,IStatus
+    public class UpdateTruckRequest : IRequest, IId, ICode, IStatus
     {
         [Required]
         public int Id { get; set; }
@@ -19,5 +20,17 @@ namespace Application.Requests.Trucks
 
         [MaxLength(255)]
         public string? Description { get; set; }
+
+        public static UpdateTruckRequest MapFromDto(int id, TruckDto dto)
+        {
+            return new UpdateTruckRequest
+            {
+                Id = id,
+                Code = dto.Code,
+                Name = dto.Name,
+                Status = dto.Status,
+                Description = dto.Description
+            };
+        }
     }
 }
