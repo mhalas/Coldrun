@@ -1,4 +1,8 @@
 CREATE DATABASE Coldrun;
+GO;
+
+Use Coldrun;
+GO;
 
 CREATE TABLE Truck(
 	Id int IDENTITY(1,1) PRIMARY KEY,

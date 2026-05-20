@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Application.Requests.Trucks
 {
-    public class CreateTruckRequest: IRequest<int>, ICode
+    public class CreateTruckRequest: IRequest<int>, ICode, IStatus
     {
         [Required]
         [MaxLength(50)]

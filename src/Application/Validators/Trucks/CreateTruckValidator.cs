@@ -9,6 +9,7 @@ namespace Application.Validators.Trucks
         public CreateTruckValidator(ColdrunContext dbContext)
         {
             Include(new TruckCodeValidator<CreateTruckRequest>(dbContext));
+            Include(new TruckStatusValidator<CreateTruckRequest>());
         }
     }
 }

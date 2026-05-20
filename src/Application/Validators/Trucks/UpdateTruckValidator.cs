@@ -24,9 +24,16 @@ namespace Application.Validators.Trucks
                     RuleFor(x => x)
                         .SetValidator(new TruckCodeValidator<UpdateTruckRequest>(dbContext));
 
-                    RuleFor(x => x.Status)
-                        .MustAsync(CheckStatusTransition)
-                        .WithMessage("This status transition is not allowed according to the business rules.");
+                    RuleFor(x => x)
+                        .SetValidator(new TruckStatusValidator<UpdateTruckRequest>())
+                        .DependentRules(() =>
+                        {
+                            RuleFor(x => x.Status)
+                                .MustAsync(CheckStatusTransition)
+                                .WithMessage("This status transition is not allowed according to the business rules.");
+                        });
+
+                    
                 });
         }
 
